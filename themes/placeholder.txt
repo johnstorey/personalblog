@@ -1,0 +1,1 @@
+Added because git does not checkin empty directories.
