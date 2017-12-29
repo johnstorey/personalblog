@@ -12,7 +12,10 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'mkdir -p themes && cd themes && git clone https://github.com/budparr/gohugo-theme-ananke.git && cd ..''
+        sh 'mkdir -p themes'
+	sh 'cd themes'
+	sh 'git clone https://github.com/budparr/gohugo-theme-ananke.git'
+	sh 'cd ..'
         sh 'hugo' 
       }
     }
