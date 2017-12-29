@@ -12,7 +12,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'git submodule init'
+        sh 'mkdir -p themes && cd themes && git clone https://github.com/budparr/gohugo-theme-ananke.git && cd ..''
         sh 'hugo' 
       }
     }
