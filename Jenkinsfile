@@ -22,8 +22,12 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        sh "ssh -i ~/.ssh/personal-blog root@blog.johnstorey.org 'rm -rf /var/www/html/*' " 
-        sh 'scp -r -i ~/.ssh/personal-blog public/* root@blog.johnstorey.org:/var/www/html '
+        sshagent(['personal-blog']) {
+          sh 'echo SSH_AUTH_SOCK=$SSH_AUTH_SOCK'
+          sh 'ls -al $SSH_AUTH_SOCK || true'
+          sh "ssh root@blog.johnstorey.org 'rm -rf /var/www/html/*' " 
+          sh 'scp -r public/* root@blog.johnstorey.org:/var/www/html '
+        }
       }
     }
   }
