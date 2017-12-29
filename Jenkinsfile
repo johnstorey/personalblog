@@ -14,6 +14,7 @@ pipeline {
       steps {
         sh 'mkdir -p themes'
 	sh 'cd themes'
+        sh 'rm -rf *'
 	sh 'git clone https://github.com/budparr/gohugo-theme-ananke.git'
 	sh 'cd ..'
         sh 'hugo' 
