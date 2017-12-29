@@ -8,6 +8,7 @@ pipeline {
     stage('build') {
       steps {
         sh 'hugo'
+        sh 'hugo server'
       }
     }
     stage('deploy') {
