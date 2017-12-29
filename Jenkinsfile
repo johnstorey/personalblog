@@ -5,15 +5,15 @@ pipeline {
           }
         }
   stages {
-    stage('build') {
+    stage('Build') {
       steps {
         sh 'hugo'
-        sh 'hugo server'
       }
     }
-    stage('deploy') {
+    stage('Deploy') {
       steps {
-        sh 'echo deploy securely with ssh'
+        sh "ssh -i ~/.ssh/personal-blog root@blog.johnstorey.org 'rm -rf /var/www/html/*' " 
+        sh 'scp -r -i ~/.ssh/personal-blog public/* root@blog.johnstorey.org:/var/www/html '
       }
     }
   }

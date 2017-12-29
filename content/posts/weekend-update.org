@@ -1,0 +1,21 @@
+---
+title: "Weekend Update"
+date: 2017-12-02T16:44:45-08:00
+draft: false
+---
+
+My Saturday
+
+- test my ansible setup by rebuilding my Fedora based GNU-Linux laptop. The laptop is much faster now.
+- fixed lots of little things in the relevant ansible playbooks, and recorded tasks for the rest.
+- accidently blew away my blog along the way, which I am currently re-creating by hand.
+- put automated backups on the laptop with rsync to a private S3 bucket (see previous point).
+- my last goal will be to set up DNSMASQ on a Raspberry Pi
+
+Which will clear the way for me build PWA's and giving them URIs that my phone will see.
+
+Tomorrow, after church, it will be back to work related stuff such as machine learning and my calculus refresher.
+
+Somedays it's just a good day.
+
+

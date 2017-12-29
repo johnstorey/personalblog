@@ -1,0 +1,31 @@
+---
+title: "Rust in Vscode"
+date: 2017-11-04T16:15:43-08:00
+draft: false
+---
+
+* Personal Update
+
+Well, I've been out for a week. We are moving from South Carolina back to Silicon Valley -- actually we did move, things happened really fast. That left our house to pack up. Last weekend was my sisters wedding, and I took the week to do just that. It's maybe 80 to 90 percent done, and man am I tired.
+
+I also took the time to start using Enzyme with Jest for testing React components. It's very nice, but not the topic of this post.
+
+* Settung Up VSCode for Rust
+
+So this is a quick reminder to myself on how I got Rust mode working in VSCode. For various reasons ranging from Web Assembly, to needing a new systems language, to strong preferences on some side projects I want to do with a friend, I've veered off from Go to Rust for now. Reading about it as I flew on the plane today was very, very enlightening. I think I'm going to love this on the level of my love for Elixir (though for totally different problem domains!)
+
+The basic issue right now with VSCode and the plugin Rust (rls) on Fedora seems to be that the current nightly builds do not have RLS (the rust language server) included. So the following line will let you get things working.
+
+#+BEGIN_SRC javascript
+rustup component add rls-preview --toolchain nightly-2017-10-24
+#+END_SRC
+
+Also, I have the following at the end of my .bashrc file. Not sure if this really matters or not, but I'm recording it for completeness.
+
+#+BEGIN_SRC javascript
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+#+END_SRC
+
+* Refeferences
+
+[[https://github.com/Connicpu/vsc-rustfmt/issues/2][Github Issue]]

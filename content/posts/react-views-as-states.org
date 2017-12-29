@@ -1,0 +1,24 @@
+---
+title: "React Views as States"
+date: 2017-11-12T16:22:44-08:00
+draft: false
+---
+
+* Overview
+
+So recently I've been going through one of those incredible level up periods in my technical skills. My perennial issue is that I change my tools to match changes in the market, while at the same time trying to improve the toolset I have. That means a lifelong cycle of weekly learning. Software is changing daily, and we have the excitement of keeping up!
+
+That means this week I have been 
+
+- Studying 'good' react code and architecture patterns to get better at what I'm doing at work.
+- Experimenting with different AWS DevOps for what I will be doing at work.
+- Writing an Ansible playbook for my environment as I am setting up and tearing down various machines.
+- Occasionally giving into the temptation to work a bit more on an OS kernel in Rust (fun, but purely for pleasure.)
+- Studying Unity3D because I'm backing up my wife as she designs and writes her VR / AR applications.
+
+Re-reading that list reminds me: life is pretty grand.
+
+This week a [[http://lucasmreis.github.io/blog/simple-react-patterns/][Medium Post]] showed a different path than I was using to implement how I think about React component UI's. Basically I find many cases where the component view changes due to the state it's in. But clearly we don't want all possible view combinations in the component itself. That would just be a mess! The article suggested breaking out the views into [[https://github.com/airbnb/enzyme][Enzyme]] testable components, and having a thunk that switches between them based on state. So, using Redux and Redux-Saga as we do in my current application, I put a simple example together. You can look at the whole repository on GitHub, but the idea is easily readable at this [[https://github.com/johnstorey/component-architecture/blob/master/src/components/GetInstances.js][component file]]. I'm pleased with the result.
+
+You can ignore the /namespace/ property. I use it in some work components to hold state unique to a component instance. It is a solution I am not completely pleased with, and not relevant to what I am tring to show here.
+

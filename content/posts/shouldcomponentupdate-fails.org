@@ -1,0 +1,54 @@
+---
+title: "Shouldcomponentupdate Fails"
+date: 2017-10-21T16:10:13-08:00
+draft: false
+---
+
+Let's talk about something simple in React. Let's take a moment to look at shouldComponentUpdate.
+
+shouldComponentUpdate is called to determine, on a props or state change, whether you should actually re-render the component. This is pretty useful, for example, if you are changing state that does not need a screen update. Just return 'false' in that case, and the component won't re-render.
+
+But you may find it not working, and the reason is only obvious when you've seen it. Look at the following code example.
+
+#+BEGIN_SRC javascript
+class MonsterName extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      monsterName: 'Godzilla',
+    };
+  }
+
+  // Never re-render anything on this component.
+  shouldComponentUpdate(nextProps, nextState) {
+    return false;
+  }
+
+  render() {
+    (
+      <span>
+        <input type="text"></input>
+      </span>
+    );
+  };
+
+}
+#+END_SRC
+
+Now, I'm writing this from memory, but intent is never to re-render the component. But If you type in the text field, it will absolutely re-render. Give it a try!
+
+Can you figure out why?
+
+* Functionality by Side Effect
+
+This code has not attached the input element to the React infrastructure. The developer is not warned, and because React does not know about the element, it's not controlling it's rendering. So shouldComponentUpdate has no effect on the input element. In React this attachment is created implicitly, as a side effect. As it is, the code will run. It just won't do what you want, and it won't even warn you that this may not be what you meant. That's something that really bothers me. After all, how often should there be inputs in a React based app that are not hooked into the React architecture? I'd think that odd, and your tooling should warn you that it's odd too.
+
+What the above code should have done is add the initial value of the input as a value property, like this.
+
+#+BEGIN_SRC javascript
+<input value={ this.state.monsterName } type="text"></input>
+#+END_SRC
+
+Any slightly experience React developer could see the error. But if you are just learning, it's non-obvious. So there is the issue and the fix. It may be no one reads this -- then again, maybe I will read this post again at 2 AM some future day, and solve my own problem. If that happens -- you're welcome future me.
+

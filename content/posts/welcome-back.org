@@ -1,0 +1,23 @@
+---
+title: "Welcome Back"
+date: 2017-10-15T16:05:04-08:00
+draft: false
+---
+
+With the new job, a new attempt to keep a blog. At least I have plenty to write about each week!
+
+These days I'm doing AWS architecture and development, and writing React based front-ends. React Native apps seem very likely to be in the future.
+
+Today's task was to set the infrastructure to serve the blog over HTTP (I'll do CloudFront and HTTPS later!), so there won't be much to write about. However here is my "challenge of the moment."
+
+I created an AWS Lambda function (well, I used [[https://serverless.com][Serverless]], but you get the idea.) It calls the AWS SDK to stop an instance.
+
+Then I use the ec2.waitFor function to wait for the instance to stop, which can take 10 minutes according to the documentation.
+
+Lambda functions, at the most, can be configured to run for 300 seconds, which is 5 minutes if my math serves.
+
+So other than putting the waitFor into it's own, pollable API call on Lamba, how do I implement the API so my React app can stop an instance, wait until it has completely stopped, then go on to the next step?
+
+I admit that this is not the most challenging problem in the world, but it's at the top of my Monday 'todo' list right now, so there you go.
+
+On a personal note, I'm hoping to find time to ramp up on Go enough to write my own text editor along the lines of Godit. Personal projects are a bit low on the priority list now, but after the new year I should be settled into work and back on that one. I'm thinking of using doubly-linked lists of gap buffers as the data structure. I stole the idea from a comment on Stack Overflow by the creator of the JOE editor. Sorry, I don't have a link to that handy. But it was interesting reading about Rope, Gap Buffer, and Piece Table as approaches to handling data in an editor.

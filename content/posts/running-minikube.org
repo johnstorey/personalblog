@@ -1,0 +1,65 @@
+---
+title: "Running Minikube"
+date: 2017-12-06T19:02:20-08:00
+draft: false
+---
+
+* Minikube Issues
+
+Recently I went to set up Minikube on my development laptop. I'm runnning Fedora 27, and things went pretty well. There was an issue that took me a bit of research to work through. This is a record for future reference.
+
+* Why Can't Minikube Pull the Container Image
+
+Maybe I should have paid more attention to [[https://kubernetes.io][Kubernetes]] for the last few years (ok, it's taken over -- I really should have had). But I didn't, and I'm about to use it in a new position, so I wanted to play with a few tutorials locally to get a feel for things.
+
+This should have taken me a few minutes. But everytime I typed
+
+#+BEGIN_SRC bash
+kubectl create service service-name
+kubectl get service service-name
+#+END_SRC
+
+Minikube told me that the service had an error pulling the image from Docker. Running it with 
+
+#+BEGIN_SRC bash
+docker run service-name
+#+END_SRC 
+
+worked without problem.
+
+* It's the Registry
+
+Minikube, by default, looks to Docker Hub to pull images. Not to your local images. So I'd build my Dockerfile, tell Kubernetes to pull it, and it would look in Docker Hub. Since I had not pushed my image to Docker Hub, Kubernetes failed.
+
+The solution was pretty simple. I set up a local Docker Repository and pushed my image there as described [[https://docs.docker.com/registry/deploying/#stop-a-local-registry][here]].
+
+As for images, they had to be tagged and pushed to the local registry properly. It's well described in the documentation page linked above.
+
+Then I restarted Minikube with the new flag /--insecure-registry/.
+
+#+BEGIN_SRC bash
+minikube stop
+minikube start --insecure-registry=<ip-address>:5000
+#+END_SRC
+
+But Kubernetes still wouldn't pull the image. What?
+
+* Make Minikube Rebuild Itself
+
+Basically, Minikube needs to rebuild itself to have new flags take effect. The recommendation is to do something like
+
+#+BEGIN_SRC bash
+minikube stop
+minikube delete
+minikube start --insecure-registry=<ip-address>:5000
+#+END_SRC
+
+But I also deleted the ~/.minikube directory after stopping Minikube. That forced it to re-download the ISO used by VirtualBox and ensured that everything was rebuilt with the correct flag in force.
+
+Lastly I made sure my deployment scripts had their images referenced as
+
+#+BEGIN_SRC bash
+<ip-address>:5000/<image-name>
+#+END_SRC
+
+Voila! Everything works fine now.

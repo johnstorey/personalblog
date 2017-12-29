@@ -1,0 +1,54 @@
+---
+title: "Install Aws Cli With Powershell"
+date: 2017-11-30T16:30:27-08:00
+draft: false
+---
+
+* Summary
+
+I was posed an interesting problem at work recently. One of our team members, every week, had to
+
+- compile some NodeJS packages
+- zip up the resulting files
+- log into an EC2 Windows instance
+- copy the zip files up to the instances
+- unzip them
+- move the results to various directories
+
+"What a great candidate for a shell script!", said my internal Dr. Obvious. (He looks a bit like Dr. Horrible btw.)
+
+"By the way," I hear next, "it's on Windows."
+
+Well darn. I'm really a Unixy guy, but Powershell has to work, right?
+
+* Getting AWS CLI in a PowerShell Script
+
+ Like C# (which I'm increasingly a fan of on Linux, and if I was not busy with Rust and other stuff, I'd be writing all kinds of stuff in) PowerShell is really awesome. But it's downfall is that it is on the Windows OS, and that thing feels designed to cause developers agony. One situation that was problematic was that the EC2 Windows instances don't install AWS CLI tool by default. I used a remote PowerShell session that required that tool, so here is a record of how I solved it. 
+
+** Install Chocolately
+
+Like any platform, there are package managers for Windows . I used [[https://chocolatey.org/][Chocolately] and installed it with the PowerShell command.
+
+#+BEGIN_SRC bash
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://www.chocolately.org/install.psi))
+#+END_SRC
+
+** Now Install the AWS CLI Tools
+
+Chocolately will install the AWS CLI tools without human intervention. That's what I need it for.
+
+#+BEGIN_SRC bash
+choco install -y awscli
+#+END_SRC
+
+** Run the AWS CLI Tools
+
+The last problem was running the tools. Now they are on the PATH, but my remote session had the old, pre-tool PATH. I did not want to start a new session by re-logging in, so I did this instead:
+
+#+BEGIN_SRC bash
+Start-Process "C:\Program Files\Amazon\AWSCLI\aws.exe" -ArgumentList "s3 cp C:\secret-file.txt s3://my-bucket-name"
+#+END_SRC
+
+* Summary
+
+It's all very doable with PowerShell. These lines are part of a much larger script that does all kinds of things in a launch script. It is given to AWS when the instance is launched, and basically does configuration of everything with no human intervention. It seems few people have documented this on the internet though, so here is my little contribution.

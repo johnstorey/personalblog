@@ -1,0 +1,9 @@
+---
+title: "Facial Recog Test One"
+date: 2017-12-10T14:44:56-08:00
+draft: false
+---
+
+Playing with OpenCV and facial recoginition to take a break from machine learning theory today.
+
+<img src="/images/2017/12/detected-faces.png">2014 Zombie Walk</img>
