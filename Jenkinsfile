@@ -11,7 +11,9 @@ pipeline {
       }
     }
     stage('deploy') {
-      sh 'echo deploy securely with ssh'
+      steps {
+        sh 'echo deploy securely with ssh'
+      }
     }
   }
 }
