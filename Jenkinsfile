@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('Replace With Custom Image') {
       steps {
-        sh 'apk add --update openssh'
+        sh 'apk add --update openssh git'
       }
     }
     stage('Build') {
