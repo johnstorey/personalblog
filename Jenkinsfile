@@ -7,8 +7,11 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh 'echo building'
+        sh 'hugo'
       }
+    }
+    stage('deploy') {
+      sh 'echo deploy securely with ssh'
     }
   }
 }
