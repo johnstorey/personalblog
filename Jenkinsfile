@@ -1,9 +1,9 @@
 pipeline {
-  agent { docker {
-          image 'jojomi/hugo'
-	  args '-v /home/johnstorey/.ssh:/root/ssh'
-          }
-        }
+  agent { 
+    docker {
+      image 'jojomi/hugo'
+    }
+  }
   stages {
     stage('Replace With Custom Image') {
       steps {
