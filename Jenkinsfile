@@ -1,8 +1,14 @@
 pipeline {
-  agent { docker 'jojomi/hugo' }
+  agent { docker {
+          'jojomi/hugo'
+	  args '-p 1337:1337'
+          }
+        }
   stages {
     stage('build') {
-      sh 'echo building'
+      steps {
+        sh 'echo building'
+      }
     }
   }
 }
