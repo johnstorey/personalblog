@@ -1,6 +1,6 @@
 pipeline {
   agent { docker {
-          'jojomi/hugo'
+          image 'jojomi/hugo'
 	  args '-p 1337:1337'
           }
         }
