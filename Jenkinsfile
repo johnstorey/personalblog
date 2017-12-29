@@ -9,7 +9,8 @@ pipeline {
       steps {
         sh 'apk add --update openssh'
         sh 'mkdir -p /root/.ssh'
-        sh 'cp /root/ssh/personal-blog* /root/.ssh'
+        sh 'cp /root/ssh/personal-blog /root/.ssh'
+        sh 'cp /root/ssh/personal-blog.pub /root/.ssh'
       }
     }
     stage('Build') {
