@@ -5,6 +5,11 @@ pipeline {
           }
         }
   stages {
+    stage('Replace With Custom Image') {
+      steps {
+        sh 'apk add --update openssh'
+      }
+    }
     stage('Build') {
       steps {
         sh 'hugo'
