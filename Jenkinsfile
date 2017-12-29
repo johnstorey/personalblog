@@ -17,6 +17,8 @@ pipeline {
         sh 'rm -rf *'
 	sh 'git clone https://github.com/budparr/gohugo-theme-ananke.git'
 	sh 'cd ..'
+        sh 'mkdir data layouts static'
+        sh 'ls -la'
         sh 'hugo' 
       }
     }
