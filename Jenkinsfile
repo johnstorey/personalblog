@@ -1,13 +1,15 @@
 pipeline {
   agent { docker {
           image 'jojomi/hugo'
-	  args '-v ~/.ssh:/root/.ssh'
+	  args '-v ~/.ssh:/root/ssh'
           }
         }
   stages {
     stage('Replace With Custom Image') {
       steps {
         sh 'apk add --update openssh'
+        sh 'mkdir -p /root/.ssh'
+        sh 'cp /root/ssh/personal-blog* /root/.ssh'
       }
     }
     stage('Build') {
