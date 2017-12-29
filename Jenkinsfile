@@ -1,7 +1,7 @@
 pipeline {
   agent { docker {
           image 'jojomi/hugo'
-	  args '-v ~/.ssh:/root/ssh'
+	  args '-v /home/johnstorey/.ssh:/root/ssh'
           }
         }
   stages {
