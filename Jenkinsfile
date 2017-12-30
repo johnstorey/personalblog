@@ -15,8 +15,6 @@ pipeline {
         sh 'mkdir -p themes'
         sh 'rm -rf themes/*'
 	sh 'git clone https://github.com/budparr/gohugo-theme-ananke.git themes/gohugo-theme-ananke'
-	sh 'ls -l themes/'
-        sh 'ls -la'
         sh 'hugo' 
       }
     }

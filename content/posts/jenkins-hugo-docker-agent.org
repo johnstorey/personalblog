@@ -1,0 +1,71 @@
+---
+title: "Jenkins, Hugo, and Docker"
+date: 2017-12-29T18:22:37-08:00
+draft: false
+---
+
+Wow, it's been a fun, exciting time. My new job has curtailed my machine learning studies (with day work and night calls to a time zone thirteen hours away taking up my time.) Mostly I get a few hours in on Saturday mornings right now. Hopefully early February my schedule will free up a bit though.
+
+* Jenkins Deployment of This Blog
+
+One of my current efforts is to understand enough of what our dev ops engineer has set up so that I can be a backup if there is an emergency while he is on vacation. He's setting up a great CI system using
+- Jenkins
+- Docker
+- Kubernetes
+
+These are all technologies I was somewhat familiar with, but I've been learning alot more just to catch up. Along the way I thought it would be fun to move this blog deployment to a local Jenkins running on my laptop. Later I'll consider using a cloud instance that is somehow stopped when not in use (to reduce the costs).
+
+I'm currently deploying the blog you read by
+- Checking in new posts into a Hugo based static site generator layout.
+- Manually running a Jenkins pipeline job, with Jenkins running in a Docker container.
+- Jenkins starts a build agent as another Docker container on the host.
+- It checks out the blog from the git repository and generates the static site.
+- SSH is used to deploy the newly generated blog to production, where it's now readable by you!
+
+Out of all this, the new challenge for me was determining the correct way to pass the SSH key into the build agent. This is what I did.
+
+* SSHAgent Plugin
+
+It turns out the steps are rather easy.
+
+** Setup the SSH Credentials
+
+Jenkins allows you to set Credentials globally, or restricted to a folder and below. At each level the sidebar menu item /Credentials/ let's you add them in. In my case, I wanted to add an SSH key with username.
+
+<img src="/images/2017/12/jenkins-credentials.png" alt="Credential creation screen">
+  Setup the SSH Credentials
+</img>
+
+You'll notice some interesting field choices here
+- Username: jenkins
+- ID: personal-blog
+
+The username should usually be "jenkins". The ID can be auto-generated, but we use it later in the pipeline, so I put in a more descriptive term. I'm deploying a personal blog, and have thus chosen to name my credentials "personal-blog". 
+
+Notice that while the scope can be limited by a folder, I happen to be using a global scope here. That's not exactly best practice and you should not follow that example.
+
+Lastly be aware that you are pasting in the private key you want to use, not the public one.
+
+** Using the SSH Credentials in the Build Agent
+
+As I mentioned, my build agent is also a container. We need a way, via the pipeline, to pass in the credentials we just created before we use our SSH key.
+
+Remember the ID we set -- "personal-blog"? Install the SSHAgent Jenkins plugin, and you can wrap your SSH commands in the pipeline step as follows. 
+
+#+BEGIN_SRC bash
+    stage('Deploy') {
+      steps {
+        sshagent(['personal-blog']) {
+          sh "ssh -o StrictHostKeyChecking=no root@blog.johnstorey.org 'rm -rf /var/www/html/*' "
+          sh 'scp -r public/* root@blog.johnstorey.org:/var/www/html '
+        }
+      }
+#+END_SRC
+
+  Now, I admit there is going to be some downtime in this simple deployment strategy, but it's only a personal blog. More importantly, you can see how the SSHAgent plugin lets you easily specify which credentials to use. The credentials are passed into the build agent without them being explicitly built into the container itself. Is that nice or what?
+
+* Summary
+- Install the SSHAgent plugin for Jenkins.
+- Create SSH with Username credentials.
+- Use the /sshagent/ command in pipelines to reference the credentials by ID.
+ 
