@@ -9,16 +9,18 @@ Wow, it's been a fun, exciting time. My new job has curtailed my machine learnin
 * Jenkins Deployment of This Blog
 
 One of my current efforts is to understand enough of what our dev ops engineer has set up so that I can be a backup if there is an emergency while he is on vacation. He's setting up a great CI system using
+
 - Jenkins
 - Docker
 - Kubernetes
 
-These are all technologies I was somewhat familiar with, but I've been learning alot more just to catch up. Along the way I thought it would be fun to move this blog deployment to a local Jenkins running on my laptop. Later I'll consider using a cloud instance that is somehow stopped when not in use (to reduce the costs).
+These are all technologies I was somewhat familiar with, but I've been having to learn alot more. Along the way I thought it would be fun to move this blog deployment to a local Jenkins running on my laptop.
 
-I'm currently deploying the blog you read by
-- Checking in new posts into a Hugo based static site generator layout.
-- Manually running a Jenkins pipeline job, with Jenkins running in a Docker container.
-- Jenkins starts a build agent as another Docker container on the host.
+Here is how I am currently deploying this blog to the cloud:
+
+- Check new posts into a git repository. I use the Hugo static site generator, so that is the repository layout.
+- Manually run a Jenkins pipeline job, with Jenkins running in a Docker container.
+- The pipeline starts a build agent in another Docker container on the host.
 - It checks out the blog from the git repository and generates the static site.
 - SSH is used to deploy the newly generated blog to production, where it's now readable by you!
 
@@ -26,45 +28,51 @@ Out of all this, the new challenge for me was determining the correct way to pas
 
 * SSHAgent Plugin
 
-It turns out the steps are rather easy.
+It turns out that is rather easy. You can install the Jenkins plugin [[https://wiki.jenkins.io/display/JENKINS/SSH+Agent+Plugin][SSH Agent]], which will pass Jenkins credentials from Jenkins into build agents. This is a pipeline compatiable plugin, and works great with private SSH keys. Here is how you use it.
 
-** Setup the SSH Credentials
+** TODO Setup the SSH Credentials
 
-Jenkins allows you to set Credentials globally, or restricted to a folder and below. At each level the sidebar menu item /Credentials/ let's you add them in. In my case, I wanted to add an SSH key with username.
+ Jenkins allows you to set a Credential in different scopes. It can be scoped globally, or restricted to a folder and below. I clicked the sidebar menu item /Credentials/ to create a Credential of type "SSH key with username". Here are the values I filled in. Yes, I have hidden most of my private key -- what would you need that for?
 
 <img src="/images/2017/12/jenkins-credentials.png" alt="Credential creation screen">
-  Setup the SSH Credentials
 </img>
 
-You'll notice some interesting field choices here
+Notice two interesting field choices here
+
 - Username: jenkins
 - ID: personal-blog
 
-The username should usually be "jenkins". The ID can be auto-generated, but we use it later in the pipeline, so I put in a more descriptive term. I'm deploying a personal blog, and have thus chosen to name my credentials "personal-blog". 
+The username should usually be "jenkins". I thought it would be the user for SSH, but when we look at the pipeline you'll see that's not needed.
 
-Notice that while the scope can be limited by a folder, I happen to be using a global scope here. That's not exactly best practice and you should not follow that example.
+If you leave it blank, the ID will be auto-generated. I'm deploying a personal blog, and have chose to name my credentials "personal-blog" instead of having a randomly generated value.
+
+Notice that while the scope of the Credential can be limited to a folder, I happen to be using a global scope here. That's not exactly best practice and you should not follow my example.
 
 Lastly be aware that you are pasting in the private key you want to use, not the public one.
 
-** Using the SSH Credentials in the Build Agent
+** Usin the SSH Credentials in the Build Agent
 
 As I mentioned, my build agent is also a container. We need a way, via the pipeline, to pass in the credentials we just created before we use our SSH key.
 
-Remember the ID we set -- "personal-blog"? Install the SSHAgent Jenkins plugin, and you can wrap your SSH commands in the pipeline step as follows. 
+Remember the ID we set -- "personal-blog"? Install the SSHAgent Jenkins plugin, and you can wrap your SSH commands in the pipeline. Here is my "Deploy" step where I use it.
 
 #+BEGIN_SRC bash
-    stage('Deploy') {
-      steps {
-        sshagent(['personal-blog']) {
-          sh "ssh -o StrictHostKeyChecking=no root@blog.johnstorey.org 'rm -rf /var/www/html/*' "
-          sh 'scp -r public/* root@blog.johnstorey.org:/var/www/html '
-        }
-      }
+stage('Deploy') {
+  steps {
+    sshagent(['personal-blog']) {
+      sh "ssh -o StrictHostKeyChecking=no root@blog.johnstorey.org 'rm -rf /var/www/html/*' "
+      sh 'scp -r public/* root@blog.johnstorey.org:/var/www/html '
+    }
+  }
+}
 #+END_SRC
 
-  Now, I admit there is going to be some downtime in this simple deployment strategy, but it's only a personal blog. More importantly, you can see how the SSHAgent plugin lets you easily specify which credentials to use. The credentials are passed into the build agent without them being explicitly built into the container itself. Is that nice or what?
+Notice that I reference the Credential ID "personal-blog" here. By using the ID, the wrapped SSH commands will automatically use the referenced private key.
+
+Yes, I know this code is not the most advanced deployment strategy. It's just my blog though -- blue / green deployment is probably overkill. (Okay, maybe a Jenkins pipeline is overkill as well, but hey! pipelines! cool!!!!!).
 
 * Summary
+
 - Install the SSHAgent plugin for Jenkins.
 - Create SSH with Username credentials.
 - Use the /sshagent/ command in pipelines to reference the credentials by ID.
