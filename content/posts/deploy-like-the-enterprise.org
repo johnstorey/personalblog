@@ -1,0 +1,38 @@
+---
+title: "Deploy Like the Enterprise"
+date: 2018-02-16T22:11:54-08:00
+---
+* Upgrading the Deployment Process
+
+For the last few months I've been engineering manager at a machine learning startup. My immediate concerns have been around tooling and processes that would allow the team to move faster. One processes that has gotten attention is product deployment. As we are finally in sight of a solid Kubernetes based solution I have come to a horrid realization. My day job deployment process was about to become more advanced than the one I use for this blog.
+
+This situation must be rectified /post haste/!
+
+* Today
+
+My current deployment process for this blog is
+
+- Start my local Jenkins process.
+- Run the job that reads the build pipeline and compiles the blog.
+- The job then ssh's into a Digital Ocean instance.
+- It deletes the old copy of the blog on the instance.
+- Then it uses scp to copy up the newly compiled copy.
+
+* Tomorrow
+
+I want to change it to a Jenkins pipeline that
+
+- Compiles the static blog.
+- Builds a Nginx based container image.
+- Make sure the newly compiled copy of blog is built into the container.
+- A sanity check brings up the container and makes sure there is a home page.
+- Push the container image to a registry. Maybe Docker Hub? It's public after all.
+- Use that image to deploy a container to a PaaS.
+- A static IP endpoint is associated with the new container and disassociated with the previous container (with the last copy of the blog). The static endpoint ensures the DNS record need not be updated every time a new container is deployed.
+- A final sanity check makes sure the home page has come up in the newly deployed container.
+
+Admittedly this may work better as two pipelines, but it's pretty decent nonetheless. More interestingly, as a manager, I don't get to do this sort of thing at work any more. Little exercises such as this let me keep a feel for the practical issues the team faces day to day.
+
+* Timeline
+
+Timeline? Are you kidding? By day I am at HQ. Four nights a week I have hours of calls with offshore teams. Weekends I try to spend time with my wife. It will be done when it's done. Then we can think about POSSE and slowly moving to the IndieWeb!
