@@ -1,4 +1,4 @@
-baseURL = "https://master.d2diclm7cg24h9.amplifyapp.com/index.html""
+baseURL = https://master.d2diclm7cg24h9.amplifyapp.com/
 languageCode = "en-us"
 title = "John Storey"
 theme = "basics"
