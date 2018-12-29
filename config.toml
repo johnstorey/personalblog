@@ -1,4 +1,4 @@
-baseURL = "https://blog.johnstorey.org"
+baseURL = "http://blog.johnstorey.org"
 languageCode = "en-us"
-title = "Mental Peregrinations"
-theme = "gohugo-theme-ananke"
+title = "Blog of John Storey"
+theme = "basics"

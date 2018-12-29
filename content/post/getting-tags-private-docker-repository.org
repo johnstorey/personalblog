@@ -1,0 +1,34 @@
+---
+title: "Getting Tags Private Docker Repository"
+date: 2018-05-22T17:03:57-07:00
+draft: false
+---
+
+Tip of the day, cribbed from [[https://gist.github.com/kizbitz/e59f95f7557b4bbb8bf2][this gist]]. This allows you to get the image tags on an image in a private Docker Hub repository. First setup the environment variables.
+
+These instructions assume that you have the great tool, [[https://stedolan.github.io/jq/][jq]] installed. If you don't, why not? 
+
+#+BEGIN_SRC bash
+UNAME=yourusername
+UPASS=yourpassword
+ORG=yourorganization # Might be the same as your username; mine is for the company.
+#+END_SRC
+
+Now get an authorization token.
+
+#+BEGIN_SRC bash
+TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'${UNAME}'", "password": "'${UPASS}'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+#+END_SRC
+
+From there you can list the repositories. I'll assign them to a variable as well.
+
+#+BEGIN_SRC bash
+REPO_LIST=$(curl -s -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${UNAME}/?page_size=100 | jq -r '.results|.[]|.name')
+#+END_SRC
+
+For a particular repository, REPOSITORY, you can get it's tags in order from most recent to least, with
+
+#+BEGIN_SRC bash
+IMAGE_TAGS=$(curl -s -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/$ORG/$REPOSITORY/tags/?page_size=100 | jq -r '.results|.[]|.name')
+
+#+END_SRC

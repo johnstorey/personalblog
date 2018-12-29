@@ -1,0 +1,34 @@
+---
+title: "Use for Raspberry Pi One"
+date: 2018-06-24T12:09:31-07:00
+draft: false 
+---
+
+* Where Have I Been This Time?
+
+I'm still pretty sure no one reads this unless I send them a link (which argues I should make more HOWTO posts, because I do have things I want to communicate to our engineering team at large.) But maybe in a few years I'll look and this will seem significant.
+
+Basically, my wife and I have done one of our periodic "let's look at where our money goes -- you have *got* to be kidding me".
+
+This year I started an engineering manager job. It came with calls 4 nights a week with the offshore team, and often mornings at 5 or 7 AM. Coincidentally my monthly spending at coffee shops had risen to the USD $400 to $500 range, peaking in May 2018 at USD $503. For comparison, that's less than I'd pay to finance a new Toyota Camry Hybrid 2018. 
+
+ Then we noticed that I was spending around USD $300 to keep a Kubernetes cluster running on AWS. It was mostly to learn Kubernetes, and it ran this blog in a container. Now I drink coffee at home, and that cluster is gone. I finally moved the blog back to HTTP running on S3 until I feel like either putting up a cloud instance with Docker running, or using AWS CloudFront to set this blog up with HTTPs.
+
+Engineering management at an early stage startup where much of the team is in a time zone exactly 12 hours away from you leaves little time for blogging. So there is much I can write about, but I'm going to pick something that just optimizes my happiness a bit. It came from the question "what do you do with a Raspberry Pi A these days?"
+
+* What Do You Do With A Raspberry Pi A?
+
+Some of you are going to find this a silly question. My situation was that I had just talked myself out of building a Raspberry Pi cluster to run Kubernetes on to learn with, and instead just use Minikube. I want to understand how some Kubernetes features work; my job does not need me to know how to build the cluster itself. So I wasn't ordering 6 Pis, but I was reminded of the Pi A I had originally thought to use to serve private DNS addresses on the LAN. That never really worked out, and I've moved on. So it was just sitting there, and I wanted to do *something* if I was not building a cluster.
+
+** I Still Find Value in IRC
+
+I'm a manager now, yes, but my team is overloaded and I spend time early each morning, Monday to Saturday, learning instructure tools and technology until we can beef up our DevOps team. That means I don't have time to monitor IRC channels that I find of value, particularly #emacs and #indieweb. Then I recalled a blog post by [[https:blog.jessfraz.com][Jesse Frazelle]] where she mentioned running ZNC in her home lab.
+
+ZNC is an IRC Bouncer. What that means is that it stays logged in to IRC 24x7, and will store logs on every channel you tell it to. When you have a chance -- which I do every 2 or 3 days -- you connect to ZNC using your IRC client. ZNC will send you all the logs since you last logged in. That's how I keep up with IRC.
+
+That's what you do with a Raspberry Pi A.
+
+* Future
+
+For my next post, expect either /Adventures with Kubernetes Ingress/ or /Chief Architect and Engineer Manager: Who is DRI for What?/. It all depends on time really, and perpetually I'm out of stock on that.
+
