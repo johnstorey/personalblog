@@ -1,4 +1,4 @@
 baseURL = 'https://johnstorey.org'
 languageCode = "en-us"
 title = "John Storey"
-theme = "gohugo-theme-ananke"
+theme = "basics"
