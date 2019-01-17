@@ -1,0 +1,4 @@
+# Create new post.
+
+hugo new post/POSTNAME.org
+
