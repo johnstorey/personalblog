@@ -4,7 +4,7 @@ date: 2019-03-07T08:40:09-08:00
 draft: false
 ---
 
-I live in the state of California in the United States of America. It is 2019, and I'm watching climate change fears drive some decent legistlation. In particular, I'm seeing laws now require newly built homes have solar panels on them, and incentives for buying electric vehicles. This works, but as usual, not totally as expected (the solar panel law just incented builders to form their own solar panel company with sub-par panels, and force you to agree to horrible deals if you by their homes. I'm looking at you Lennar!). Regulation can help, but as usual, it creates a strong incentive to pervert for personal profit.
+I live in the state of California in the United States of America. It is 2019, and I'm watching climate change fears drive some decent legistlation. In particular, I'm seeing laws now require newly built homes have solar panels on them, and incentives for buying electric vehicles. This works, but as usual, not totally as expected (the solar panel law just incented builders to form their own solar panel company with sub-par panels, and force you to agree to horrible deals if you buy their homes. I'm looking at you Lennar!). Regulation can help, but as usual, it creates a strong incentive to pervert for personal profit.
 
 Soon I expect we'll see a Net Zero law. The idea of Net Zero is that the surplus electricity produced by your home is sent to the grid, and and night you live off electricity coming from the grid. If you balance that out, a net amount of zero electricity needs to be created for your personal use. It sounds like a good idea. But I think it embodies some bad thinking.
 
